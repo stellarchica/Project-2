@@ -11,7 +11,7 @@ module.exports = function(app) {
     });
   });
 
-  // Load example page and pass in an example by id
+  // Load tab page and pass in an tab by id
   app.get("/tab/:id", function(req, res) {
     db.Tab.findOne({ where: { id: req.params.id } }).then(function(dbTab) {
       res.render("tab", {
