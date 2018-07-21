@@ -3,8 +3,8 @@ var db = require("../models");
 module.exports = function(app) {
   // Get all Tabs
   app.get("/api/tabs", function(req, res) {
-    db.Tab.findAll({}).then(function(dbTabs) {
-      res.json(dbTabs);
+    db.Tab.findAll({}).then(function(dbTab) {
+      res.json(dbTab);
     });
   });
 
