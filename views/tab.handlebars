@@ -8,14 +8,31 @@
             <strong>{{tab.name}}</strong>
           </p>
           <p>
-            <strong>{{tab.description}}</strong></p>
-          <p>
-            <strong>Outstanding Expenses</strong>:
-            <br>{{expense.name}}
-            <br>{{expense.cost}}
-            <br>{{expense.username}}
+            <strong>{{tab.description}}</strong>
           </p>
-            <button id="new-expense">New Expense</button>
+          <ul id="expense-list" class="list-group">
+            {{#each expenses}}
+            <li data-id="{{this.id}}" class="list-group-item">
+              <a href="expense/{{this.id}}">{{this.text}}</a>
+              <button class="btn btn-danger float-right delete">ｘ</button>
+            </li>
+            {{/each}}
+          </ul>
+          <form class="clearfix mb-4" action="POST">
+          <div class="form-group">
+            <label for="expense-name">New Expense</label>
+            <input type="text" id="expense-name" class="form-control" aria-describedby="expense-name" placeholder="Enter Name">
+          </div>
+          <div class="form-group">
+            <label for="expense-amount">Amount</label>
+            <input type="text" id="expense-amount" class="form-control" aria-describedby="expense-amount" placeholder="Enter Amount">
+          </div>
+          <div class="form-group">
+            <label for="expense-username">New Expense</label>
+            <input type="text" id="expense-username" class="form-control" aria-describedby="expense-username" placeholder="Enter Username">
+          </div>
+          <button id="submit" class="btn btn-primary float-right">Submit</button>
+        </form>
           </p>
           </p>
             <a href="/">← Back To Home</a>
