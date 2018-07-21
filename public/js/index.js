@@ -1,47 +1,46 @@
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
+var $tabName = $("#tab-name");
 var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $tabList = $("#tab-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  saveTab: function(tab) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/tabs",
+      data: JSON.stringify(tab)
     });
   },
-  getExamples: function() {
+  getTab: function() {
     return $.ajax({
-      url: "api/examples",
+      url: "api/tabs",
       type: "GET"
     });
   },
-  deleteExample: function(id) {
+  deleteTab: function(id) {
     return $.ajax({
-      url: "api/examples/" + id,
+      url: "api/tabs/" + id,
       type: "DELETE"
     });
   }
 };
 
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+// refreshTabs gets new tabs from the db and repopulates the list
+var refreshTabs = function() {
+  API.getTab().then(function(data) {
+    var $tabs = data.map(function(tab) {
       var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+        .text(tab.name)
+        .attr("href", "/tab/" + tab.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": example.id
+          "data-id": tab.id
         })
         .append($a);
 
@@ -54,46 +53,44 @@ var refreshExamples = function() {
       return $li;
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
+    $tabList.empty();
+    $tabList.append($tabs);
   });
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
+// handleFormSubmit is called whenever we submit a new tab
+// Save the new tab to the db and refresh the list
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  var tab = {
+    name: $tabName.val().trim(),
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
+  if (!(tab.name)) {
+    alert("You must enter an Tab name!");
     return;
   }
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveTab(tab).then(function() {
+    refreshTabs();
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  $tabName.val("");
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
+// handleDeleteBtnClick is called when an tab's delete button is clicked
+// Remove the tab from the db and refresh the list
 var handleDeleteBtnClick = function() {
   var idToDelete = $(this)
     .parent()
     .attr("data-id");
 
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+  API.deleteTab(idToDelete).then(function() {
+    refreshTabs();
   });
 };
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$tabList.on("click", ".delete", handleDeleteBtnClick);

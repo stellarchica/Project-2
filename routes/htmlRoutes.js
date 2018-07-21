@@ -6,7 +6,7 @@ module.exports = function(app) {
     db.Tab.findAll({}).then(function(dbTabs) {
       res.render("index", {
         msg: "Welcome!",
-        examples: dbTabs
+        tabs: dbTabs
       });
     });
   });
